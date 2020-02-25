@@ -16,4 +16,4 @@ The cause of Parkinson's disease is unknown, but is believed to involve both gen
 Exposure to pesticides and a history of head injury have each been linked with Parkinson disease (PD), but the risks are modest. Never having smoked cigarettes, and never drinking caffeinated beverages, are also associated with small increases in risk of developing PD.
 Low concentrations of urate in the blood serum is associated with an increased risk of PD.
 
-
+![parkinson's](PD.png)
