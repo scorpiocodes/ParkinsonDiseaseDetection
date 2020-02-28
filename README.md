@@ -17,3 +17,11 @@ Exposure to pesticides and a history of head injury have each been linked with P
 Low concentrations of urate in the blood serum is associated with an increased risk of PD.
 
 ![parkinson's](PD.png)
+
+## Applied Machine Learning in Healthcare.
+
+Machine learning in medicine has recently made headlines. Google has developed a machine learning algorithm to help identify cancerous tumors on mammograms. Stanford is using a deep learning algorithm to identify skin cancer. A recent JAMA article reported the results of a deep machine-learning algorithm that was able to diagnose diabetic retinopathy in retinal images. It’s clear that machine learning puts another arrow in the quiver of clinical decision making.
+
+Still, machine learning lends itself to some processes better than others. Algorithms can provide immediate benefit to disciplines with processes that are reproducible or standardized. Also, those with large image datasets, such as radiology, cardiology, and pathology, are strong candidates. Machine learning can be trained to look at images, identify abnormalities, and point to areas that need attention, thus improving the accuracy of all these processes. Long term, machine learning will benefit the family practitioner or internist at the bedside. Machine learning can offer an objective opinion to improve efficiency, reliability, and accuracy.
+
+![MachineLearning_PersonalizedMedicine](MachineLearning_PersonalizedMedicine.jpg)
