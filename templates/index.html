@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkinsons DIsease Detector</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+        }
+
+        .highlight-disclaimer {
+            text-align: center;
+            background-color: #ffeeba;
+            border: 1px solid #ffc107;
+            padding: 10px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-5 mb-4 text-center">Parkinsons Predictor Tool</h1>
+        <p class="highlight-disclaimer">
+            Disclaimer: This tool is intended for use by neurologists and other medical professionals. It should only be
+            used under supervised clinical environment!!
+        </p>
+        <div class="row mb-3">
+            <div class="col text-right">
+                <button type="button" class="btn btn-secondary mr-2" onclick="loadSampleData(sampleData1)">Load Sample
+                    Data 1</button>
+                <button type="button" class="btn btn-secondary" onclick="loadSampleData(sampleData2)">Load Sample Data
+                    2</button>
+            </div>
+        </div>
+        <form id="predictionForm" action="/predict" method="post" onsubmit="return validateForm()">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Left column input fields -->
+                    <div class="form-group">
+                        <label for="MDVP_Fo_Hz">MDVP:Fo(Hz):</label>
+                        <input type="text" class="form-control" id="MDVP_Fo_Hz" name="MDVP_Fo_Hz">
+                        <div id="MDVP_Fo_Hz_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MDVP_Fhi_Hz">MDVP:Fhi(Hz):</label>
+                        <input type="text" class="form-control" id="MDVP_Fhi_Hz" name="MDVP_Fhi_Hz">
+                        <div id="MDVP_Fhi_Hz_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MDVP_Flo_Hz">MDVP:Flo(Hz):</label>
+                        <input type="text" class="form-control" id="MDVP_Flo_Hz" name="MDVP_Flo_Hz">
+                        <div id="MDVP_Flo_Hz_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MDVP_Jitter_Percent">MDVP:Jitter(%):</label>
+                        <input type="text" class="form-control" id="MDVP_Jitter_Percent" name="MDVP_Jitter_Percent">
+                        <div id="MDVP_Jitter_Percent_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MDVP_Jitter_Abs">MDVP:Jitter(Abs):</label>
+                        <input type="text" class="form-control" id="MDVP_Jitter_Abs" name="MDVP_Jitter_Abs">
+                        <div id="MDVP_Jitter_Abs_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MDVP_RAP">MDVP:RAP:</label>
+                        <input type="text" class="form-control" id="MDVP_RAP" name="MDVP_RAP">
+                        <div id="MDVP_RAP_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MDVP_PPQ">MDVP:PPQ:</label>
+                        <input type="text" class="form-control" id="MDVP_PPQ" name="MDVP_PPQ">
+                        <div id="MDVP_PPQ_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Jitter_DDP">Jitter:DDP:</label>
+                        <input type="text" class="form-control" id="Jitter_DDP" name="Jitter_DDP">
+                        <div id="Jitter_DDP_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MDVP_Shimmer">MDVP:Shimmer:</label>
+                        <input type="text" class="form-control" id="MDVP_Shimmer" name="MDVP_Shimmer">
+                        <div id="MDVP_Shimmer_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MDVP_Shimmer_dB">MDVP:Shimmer(dB):</label>
+                        <input type="text" class="form-control" id="MDVP_Shimmer_dB" name="MDVP_Shimmer_dB">
+                        <div id="MDVP_Shimmer_dB_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Shimmer_APQ3">Shimmer:APQ3:</label>
+                        <input type="text" class="form-control" id="Shimmer_APQ3" name="Shimmer_APQ3">
+                        <div id="Shimmer_APQ3_error" class="error-message"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Right column input fields -->
+                    <div class="form-group">
+                        <label for="Shimmer_APQ5">Shimmer:APQ5:</label>
+                        <input type="text" class="form-control" id="Shimmer_APQ5" name="Shimmer_APQ5">
+                        <div id="Shimmer_APQ5_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MDVP_APQ">MDVP:APQ:</label>
+                        <input type="text" class="form-control" id="MDVP_APQ" name="MDVP_APQ">
+                        <div id="MDVP_APQ_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Shimmer_DDA">Shimmer:DDA:</label>
+                        <input type="text" class="form-control" id="Shimmer_DDA" name="Shimmer_DDA">
+                        <div id="Shimmer_DDA_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="NHR">NHR:</label>
+                        <input type="text" class="form-control" id="NHR" name="NHR">
+                        <div id="NHR_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="HNR">HNR:</label>
+                        <input type="text" class="form-control" id="HNR" name="HNR">
+                        <div id="HNR_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="RPDE">RPDE:</label>
+                        <input type="text" class="form-control" id="RPDE" name="RPDE">
+                        <div id="RPDE_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="DFA">DFA:</label>
+                        <input type="text" class="form-control" id="DFA" name="DFA">
+                        <div id="DFA_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="spread1">spread1:</label>
+                        <input type="text" class="form-control" id="spread1" name="spread1">
+                        <div id="spread1_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="spread2">spread2:</label>
+                        <input type="text" class="form-control" id="spread2" name="spread2">
+                        <div id="spread2_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="D2">D2:</label>
+                        <input type="text" class="form-control" id="D2" name="D2">
+                        <div id="D2_error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="PPE">PPE:</label>
+                        <input type="text" class="form-control" id="PPE" name="PPE">
+                        <div id="PPE_error" class="error-message"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-center mt-4">
+                <button type="submit" class="btn btn-primary">Predict</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        var sampleData1 = {
+            //ID: "phon_R01_S06_6",
+            MDVP_Fo_Hz: "162.568",
+            MDVP_Fhi_Hz: "198.346",
+            MDVP_Flo_Hz: "77.63",
+            MDVP_Jitter_Percent: "0.00502",
+            MDVP_Jitter_Abs: "0.00003",
+            MDVP_RAP: "0.0028",
+            MDVP_PPQ: "0.00253",
+            Jitter_DDP: "0.00841",
+            MDVP_Shimmer: "0.01791",
+            MDVP_Shimmer_dB: "0.168",
+            Shimmer_APQ3: "0.00793",
+            Shimmer_APQ5: "0.01057",
+            MDVP_APQ: "0.01799",
+            Shimmer_DDA: "0.0238",
+            NHR: "0.0117",
+            HNR: "25.678",
+            //status: "1",
+            RPDE: "0.427785",
+            DFA: "0.723797",
+            spread1: "-6.635729",
+            spread2: "0.209866",
+            D2: "1.957961",
+            PPE: "0.135242"
+        };
+
+        var sampleData2 = {
+            //ID: "phon_R01_S07_1",
+            MDVP_Fo_Hz: '197.076',
+            MDVP_Fhi_Hz: '206.896',
+            MDVP_Flo_Hz: '192.055',
+            MDVP_Jitter_Percent: '0.00289',
+            MDVP_Jitter_Abs: '0.00001',
+            MDVP_RAP: '0.00166',
+            MDVP_PPQ: '0.00168',
+            Jitter_DDP: '0.00498',
+            MDVP_Shimmer: '0.01098',
+            MDVP_Shimmer_dB: '0.097',
+            Shimmer_APQ3: '0.00563',
+            Shimmer_APQ5: '0.0068',
+            MDVP_APQ: '0.00802',
+            Shimmer_DDA: '0.01689',
+            NHR: '0.00339',
+            HNR: '26.775',
+            //status: "0",
+            RPDE: '0.422229',
+            DFA: '0.741367',
+            spread1: '-7.3483',
+            spread2: '0.177551',
+            D2: '1.743867',
+            PPE: '0.085569'
+        };
+
+        function loadSampleData(data) {
+            Object.keys(data).forEach(function (key) {
+                document.getElementById(key).value = data[key];
+            });
+        }
+
+        function validateForm() {
+            var form = document.getElementById("predictionForm");
+            var inputs = form.getElementsByTagName("input");
+
+            for (var i = 0; i < inputs.length; i++) {
+                var input = inputs[i];
+                var value = parseFloat(input.value);
+
+                if (isNaN(value) || Math.abs(value) > 299.999999) {
+                    var fieldName = input.id.replace('_', ' ');
+                    var errorMessage = fieldName + " must be a valid float value between -299.999999 and 299.999999.";
+                    document.getElementById(input.id + "_error").innerHTML = errorMessage;
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    </script>
+</body>
+
+</html>

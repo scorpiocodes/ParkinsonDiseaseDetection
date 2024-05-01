@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Model Prediction Result</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+        }
+
+        .modal-header {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .circle {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+            border: 1px solid #000;
+            vertical-align: middle;
+        }
+
+        .circle-positive {
+            background-color: #dc3545;
+        }
+
+        .circle-negative {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Prediction Result</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h6>Input Values:</h6>
+                    <ul>
+                        {% for key, value in formData.items() %}
+                        <li><strong>{{ key }}</strong>: {{ value }}</li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <h6>Prediction:</h6>
+                    <div>
+                        <span class="circle circle-{{ prediction | lower }}"></span>
+                        <span id="predictionValue">Parkinson Detection {{ prediction }}</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="redirectToHome()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function redirectToHome() {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+
+</html>
