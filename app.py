@@ -23,6 +23,7 @@ def predict():
 
     scaler = pdd.scaler
     scaled_features = scaler.transform(np.array(features).reshape(1,-1))
+    print(scaled_features)
 
     # Make prediction using your model
     prediction = model.predict(scaled_features)[0]

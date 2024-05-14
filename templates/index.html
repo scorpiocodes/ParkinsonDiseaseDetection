@@ -172,7 +172,7 @@
                 </div>
             </div>
             <div class="col-md-12 text-center mt-4">
-                <button type="submit" class="btn btn-primary">Predict</button>
+                <button id="predictButton" type="submit" class="btn btn-primary">Predict</button>
             </div>
         </form>
     </div>
@@ -238,23 +238,39 @@
             });
         }
 
-        function validateForm() {
-            var form = document.getElementById("predictionForm");
-            var inputs = form.getElementsByTagName("input");
+        $('#predictionForm input[type="text"]').on('input', function () {
+            validateField(this);
+            checkFormValidity();
+        });
 
-            for (var i = 0; i < inputs.length; i++) {
-                var input = inputs[i];
-                var value = parseFloat(input.value);
+        function validateField(inputField) {
+            var value = parseFloat(inputField.value);
+            var fieldName = inputField.id.replace('_', ' ');
 
-                if (isNaN(value) || Math.abs(value) > 299.999999) {
-                    var fieldName = input.id.replace('_', ' ');
-                    var errorMessage = fieldName + " must be a valid float value between -299.999999 and 299.999999.";
-                    document.getElementById(input.id + "_error").innerHTML = errorMessage;
-                    return false;
-                }
+            if (isNaN(value) || Math.abs(value) > 299.999999 || value.toString().split('.')[1].length > 6) {
+                var errorMessage = fieldName + " must be a valid float value between -299.999999 and 299.999999(6 decimal precision).";
+                document.getElementById(inputField.id + "_error").innerHTML = errorMessage;
+                return false;
+            } else {
+                document.getElementById(inputField.id + "_error").innerHTML = "";
+                return true;
             }
+        }
 
-            return true;
+        function checkFormValidity() {
+            var formValid = true;
+            $('#predictionForm input[type="text"]').each(function () {
+                if (!validateField(this)) {
+                    formValid = false;
+                    return false; // Break the loop if any field is invalid
+                }
+            });
+
+            if (formValid) {
+                $('#predictButton').prop('disabled', false);
+            } else {
+                $('#predictButton').prop('disabled', true);
+            }
         }
     </script>
 </body>
